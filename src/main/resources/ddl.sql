@@ -1,0 +1,8 @@
+CREATE TABLE CDR (
+	cdr_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	record_dtm TEXT,
+	org_MSISDN TEXT,
+	dest_MSISDN TEXT,
+	duration INTEGER,
+	charge FLOAT
+);
