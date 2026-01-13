@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,5 +53,14 @@ public class TestController {
 			throw new BusinessException("400", "destMSISDN:"+destMSISDN+" invalid format (66xxxxxxxx)");
 		}
 		
+	}
+	
+	@DeleteMapping(path = "delete")
+	public @ResponseBody Object deleteCDRRecord(@RequestParam(name="cdrId", required = true) Integer cdrId) {
+		try{
+			return cdrService.deleteCDR(cdrId);
+		}catch(Exception e) {
+			return 0;
+		}
 	}
 }

@@ -30,4 +30,11 @@ public class CDRService {
 		DecimalFormat chargeFormat = new DecimalFormat("0.00");
 		return CreateResp.builder().cdrId(entity.getCdrId().longValue()).recordDtm(recordDtm).orgMSISDN(orgMSISDN).destMSISDN(destMSISDN).duration(duration).charge(chargeFormat.format(entity.getCharge())).build();
 	}
+	
+	
+	@Transactional(rollbackOn = Exception.class)
+	public Integer deleteCDR(Integer cdrId) throws Exception{
+		cdrRepo.deleteById(cdrId);
+		return 1;
+	}
 }
