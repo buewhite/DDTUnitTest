@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,6 +60,15 @@ public class TestController {
 		
 	}
 	
+	@DeleteMapping(path = "delete")
+	public @ResponseBody Object deleteCDRRecord(@RequestParam(name="cdrId", required = true) Integer cdrId) {
+		try{
+			return cdrService.deleteCDR(cdrId);
+		}catch(Exception e) {
+			return 0;
+		}
+  }
+  
 	@GetMapping(path = "listcdr")
 	public @ResponseBody Object listCDRRecord(@RequestParam(name="startDate") String startDate, @RequestParam("endDate")String endDate) {
 		try {

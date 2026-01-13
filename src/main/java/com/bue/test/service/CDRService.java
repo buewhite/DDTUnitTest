@@ -33,6 +33,13 @@ public class CDRService {
 		return CreateResp.builder().cdrId(entity.getCdrId().longValue()).recordDtm(recordDtm).orgMSISDN(orgMSISDN).destMSISDN(destMSISDN).duration(duration).charge(chargeFormat.format(entity.getCharge())).build();
 	}
 	
+	
+	@Transactional(rollbackOn = Exception.class)
+	public Integer deleteCDR(Integer cdrId) throws Exception{
+		cdrRepo.deleteById(cdrId);
+		return 1;
+  }
+  
 	@Transactional(rollbackOn = Exception.class)
 	public List<CDRRecord> selectCDR(String startDate, String endDate) throws Exception {
 		List<CDRRecord> entity = cdrRepo.findByRecordDtmBetween(startDate, endDate);
