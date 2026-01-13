@@ -1,6 +1,8 @@
 package com.bue.test.service;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +31,12 @@ public class CDRService {
 		log.info("insert CDR id="+entity.getCdrId());
 		DecimalFormat chargeFormat = new DecimalFormat("0.00");
 		return CreateResp.builder().cdrId(entity.getCdrId().longValue()).recordDtm(recordDtm).orgMSISDN(orgMSISDN).destMSISDN(destMSISDN).duration(duration).charge(chargeFormat.format(entity.getCharge())).build();
+	}
+	
+	@Transactional(rollbackOn = Exception.class)
+	public List<CDRRecord> selectCDR(String startDate, String endDate) throws Exception {
+		List<CDRRecord> entity = cdrRepo.findByRecordDtmBetween(startDate, endDate);
+		
+		return entity;
 	}
 }

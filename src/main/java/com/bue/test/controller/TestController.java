@@ -1,15 +1,20 @@
 package com.bue.test.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bue.test.constants.Constant;
+import com.bue.test.db.entity.CDRRecord;
 import com.bue.test.msg.CreateResp;
 import com.bue.test.service.CDRService;
 import com.bue.test.util.BusinessException;
@@ -28,7 +33,7 @@ public class TestController {
 	@Autowired CDRService cdrService;
 	@Autowired ValidateUtil validateUtil;
 
-	@GetMapping(path = "create", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "create")
 	public @ResponseBody Object createCDRRecord(@RequestParam(name="recordDtm", required = true) String recordDtm,
 						@RequestParam(name = "orgMSISDN", required = true) String orgMSISDN,
 						@RequestParam(name = "destMSISDN", required = true) String destMSISDN,
@@ -50,6 +55,17 @@ public class TestController {
 		
 		if(!Pattern.matches("66\\d{9}", destMSISDN)) {
 			throw new BusinessException("400", "destMSISDN:"+destMSISDN+" invalid format (66xxxxxxxx)");
+		}
+		
+	}
+	
+	@GetMapping(path = "listcdr")
+	public @ResponseBody Object listCDRRecord(@RequestParam(name="startDate") String startDate, @RequestParam("endDate")String endDate) {
+		try {
+			List<CDRRecord> list = cdrService.selectCDR(startDate, endDate);
+			return list;
+		}catch(Exception e) {
+			return new ArrayList<>();
 		}
 		
 	}
